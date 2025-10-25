@@ -1,124 +1,260 @@
-# C++算法学习项目
+# C++算法练习环境
 
-这是一个专门用于学习C++算法程序设计的项目，采用模块化设计，每个算法都是独立的可执行文件。
+一个现代化的C++算法学习环境，支持多文件独立运行、高精度性能测量和优雅的工具函数复用。
 
-## 项目结构
+## 🎯 项目特性
+
+- **多文件独立运行**: 每个算法文件都有独立的`main`函数，可独立编译和运行
+- **高精度性能测量**: 基于`<chrono>`的微秒级计时器，支持RAII风格的`Timer`类
+- **内存使用分析**: 提供理论空间复杂度分析和近似测量
+- **优雅的工具函数**: 统一的`utility.h`头文件，包含数组操作、随机数据生成等工具
+- **现代化构建系统**: 基于CMake的自动发现和编译系统
+- **跨平台支持**: 支持Linux、macOS、Windows
+
+## 📁 项目结构
 
 ```
-algorithm-Tsinghua-testbook-code/
-├── 快速排序/                    # 快速排序算法相关文件
-│   ├── Code01_Partition1.cpp   # Partition1实现
-│   ├── Code02_Partition2.cpp   # Partition2实现
-│   ├── Code03_QuickSort.cpp    # 快速排序实现
-│   ├── QuickSort_interface.h   # 快速排序相关头文件
-│   └── output/                 # 旧的可执行文件目录（已废弃）
-├── common/                     # 通用头文件和工具
-│   └── algorithm_interface.h   # 通用算法接口
-├── templates/                  # 代码模板
-│   └── algorithm_template.cpp  # 算法代码模板
-├── build/                      # 构建输出目录（自动生成）
-│   └── bin/Release/            # 可执行文件输出目录
-├── .vscode/                    # VSCode配置文件
-│   ├── tasks.json             # 构建任务配置
-│   ├── launch.json            # 调试配置
-│   └── settings.json          # 编辑器设置
-├── CMakeLists.txt             # CMake构建配置
-├── build.bat                  # 构建脚本
-├── run.bat                    # 运行脚本
-├── clean.bat                  # 清理脚本
-├── create_algorithm.bat       # 创建新算法脚本
-└── README.md                  # 项目说明文档
+algorithm-c/
+├── include/                    # 通用头文件
+│   └── utility.h              # 高精度计时器和工具函数库
+├── algorithms/                 # 算法实现目录
+│   ├── sorting/               # 排序算法
+│   │   ├── bubble_sort.cpp    # 冒泡排序
+│   │   ├── selection_sort.cpp # 选择排序
+│   │   ├── insertion_sort.cpp # 插入排序
+│   │   └── quick_sort_enhanced.cpp # 增强版快速排序
+│   └── searching/             # 查找算法
+│       └── binary_search.cpp  # 二分查找
+├── QuickSort/                 # 原有快速排序算法（保持不变）
+│   ├── Code01_Partition1.cpp
+│   ├── Code02_Partition2.cpp
+│   ├── Code03_QuickSort.cpp
+│   └── QuickSort_interface.h
+├── .vscode/                   # VSCode配置
+│   ├── launch.json           # 调试配置
+│   ├── tasks.json            # 任务配置
+│   ├── settings.json         # 工作区设置
+│   └── extensions.json       # 推荐扩展
+├── bin/                       # 编译输出目录
+├── CMakeLists.txt             # 构建配置
+├── build.sh                   # CMake构建脚本
+├── simple_build.sh           # 简单构建脚本
+├── run.sh                     # 运行脚本
+└── README.md                  # 项目说明
 ```
 
-## 使用方法
+## 🚀 快速开始
 
-### 1. 快速开始
+### 1. 构建项目
 
 ```bash
-# 编译所有算法
-build.bat
+# 推荐：使用简单构建脚本（不依赖CMake）
+./simple_build.sh
 
-# 运行算法测试
-run.bat
+# 或者使用CMake构建（需要先安装CMake）
+./build.sh
 
-# 清理构建文件
-clean.bat
+# 构建Debug版本
+./build.sh --debug
+
+# 清理并重新构建
+./build.sh --clean
 ```
 
-### 2. 创建新算法
+### 2. 运行算法
 
 ```bash
-# 创建新的算法文件
-create_algorithm.bat [算法名称] [分类目录]
+# 交互式选择算法
+./run.sh
 
-# 示例
-create_algorithm.bat BubbleSort 排序算法
-create_algorithm.bat BinarySearch 查找算法
+# 运行指定算法
+./run.sh bubble_sort
+./run.sh quick_sort_enhanced
+./run.sh binary_search
+
+# 列出所有可用算法
+./run.sh --list
+
+# 运行所有算法
+./run.sh --all
+
+# 性能测试
+./run.sh --test
 ```
 
-### 3. VSCode集成
+### 3. 使用VSCode（推荐）
 
-- **构建项目**: `Ctrl+Shift+P` → `Tasks: Run Task` → `构建项目`
-- **运行算法**: `Ctrl+Shift+P` → `Tasks: Run Task` → `运行[算法名称]`
-- **调试算法**: `F5` 或使用调试面板选择对应的调试配置
+#### 🎯 F5 直接运行当前文件
 
-## 设计特点
+现在您可以直接在VSCode中按 **F5** 运行当前打开的算法文件！
 
-### 1. 模块化设计
-- 每个算法都是独立的可执行文件
-- 统一的头文件管理
-- 清晰的目录结构
+**使用方法：**
+1. 打开任意算法文件（如 `algorithms/sorting/bubble_sort.cpp`）
+2. 按 **F5** 或点击调试面板的"运行"按钮
+3. 算法自动编译并运行
 
-### 2. 自动化构建
-- CMake统一构建系统
-- 批处理脚本简化操作
-- VSCode任务集成
+**可用的运行方式：**
+- **F5 运行**：自动编译当前文件并运行（推荐）
+- **Ctrl+F5**：运行但不进入调试模式
+- **Code Runner**：按 `Ctrl+Alt+N` 快速运行
 
-### 3. 开发友好
-- 代码模板快速创建
-- 统一的测试框架
-- 性能测试工具
+**调试功能：**
+- 在代码行号左侧点击设置断点
+- 按 `F5` 开始调试
+- 支持查看变量值、单步执行等
 
-### 4. 文件管理
-- 可执行文件统一输出到 `build/bin/Release/`
-- 自动清理临时文件
-- 版本控制友好（忽略构建文件）
+**推荐扩展：**
+- **C/C++** (Microsoft)
+- **Code Runner** (Jun Han)
+- **CMake Tools** (Microsoft)
+- **C/C++ Extension Pack** (Microsoft)
 
-## 扩展指南
+## 🛠️ 工具函数使用
 
-### 添加新算法分类
+### 高精度计时器
 
-1. 创建新的分类目录
-2. 在 `CMakeLists.txt` 中添加对应的可执行文件配置
-3. 更新 `run.bat` 脚本添加新的运行选项
+```cpp
+#include "utility.h"
 
-### 自定义构建选项
+{
+    Timer timer("算法名称");
+    // 执行算法代码
+} // 自动输出执行时间
+```
 
-修改 `CMakeLists.txt` 中的编译选项：
-- 添加新的编译标志
-- 修改输出目录
-- 添加新的依赖库
+### 数组操作工具
 
-## 注意事项
+```cpp
+// 生成随机数组
+auto data = array_utils::generateRandom(1000);
 
-1. **编译器要求**: 需要安装Visual Studio 2022或更新版本
-2. **CMake版本**: 需要CMake 3.10或更高版本
-3. **文件编码**: 建议使用UTF-8编码保存源文件
-4. **路径问题**: 避免在路径中使用中文字符和空格
+// 打印数组
+array_utils::print(data, "数组内容");
 
-## 故障排除
+// 验证排序
+bool is_sorted = array_utils::isSorted(data);
+```
 
-### 编译失败
-- 检查Visual Studio是否正确安装
-- 确认CMake版本是否满足要求
-- 查看错误信息中的具体错误原因
+### 算法测试框架
 
-### 运行失败
-- 确认已成功编译
-- 检查可执行文件是否存在
-- 查看控制台输出的错误信息
+```cpp
+AlgorithmTester tester("算法名称");
+tester.testPerformance([&]() {
+    // 算法实现
+}, data_size);
+```
 
-### VSCode集成问题
-- 确认已安装C/C++扩展
-- 检查CMake Tools扩展是否安装
-- 重新加载VSCode窗口
+## 📊 性能测量特性
+
+- **微秒级精度**: 使用`std::chrono::high_resolution_clock`
+- **RAII风格**: 自动计时，无需手动管理
+- **内存分析**: 理论空间复杂度分析
+- **性能对比**: 支持多算法性能比较
+- **压力测试**: 自动验证算法正确性
+
+## 🎯 算法实现示例
+
+### 冒泡排序
+
+```cpp
+#include "utility.h"
+
+void bubbleSort(vector<int>& arr) {
+    int n = arr.size();
+    for (int i = 0; i < n - 1; ++i) {
+        bool swapped = false;
+        for (int j = 0; j < n - i - 1; ++j) {
+            if (arr[j] > arr[j + 1]) {
+                swap(arr[j], arr[j + 1]);
+                swapped = true;
+            }
+        }
+        if (!swapped) break;
+    }
+}
+
+ALGORITHM_MAIN("冒泡排序")
+    auto data = array_utils::generateRandom(1000);
+    AlgorithmTester tester("冒泡排序");
+    tester.testPerformance([&]() {
+        bubbleSort(data);
+    }, data.size());
+ALGORITHM_END
+```
+
+## 🔧 构建系统特性
+
+- **自动发现**: 自动发现所有算法文件
+- **独立编译**: 每个算法文件独立编译为可执行文件
+- **跨平台**: 支持不同操作系统和编译器
+- **优化选项**: 自动设置Release/Debug编译选项
+- **并行构建**: 支持多核并行编译
+
+## 📈 性能基准
+
+| 算法 | 时间复杂度 | 空间复杂度 | 稳定性 | 适用场景 |
+|------|------------|------------|--------|----------|
+| 冒泡排序 | O(n²) | O(1) | 稳定 | 小规模数据 |
+| 选择排序 | O(n²) | O(1) | 不稳定 | 交换成本高 |
+| 插入排序 | O(n²) | O(1) | 稳定 | 部分有序数据 |
+| 快速排序 | O(n log n) | O(log n) | 不稳定 | 大规模数据 |
+| 二分查找 | O(log n) | O(1) | - | 已排序数据 |
+
+## 🎨 输出示例
+
+```
+🎯 冒泡排序 算法演示
+==================================================
+📊 原始数据:
+   大小: 8
+   内容: 64 34 25 12 22 11 90 5 
+
+🚀 开始测试算法: 冒泡排序
+==================================================
+⏱️  冒泡排序 执行时间:     1234 μs (微秒)
+🧠 内存分析:
+   数据大小: 8 个元素
+   算法类型: 冒泡排序
+   额外内存: 0 bytes
+   理论空间复杂度: O(1) - 原地排序
+✅ 算法测试完成
+📊 排序结果:
+   大小: 8
+   内容: 5 11 12 22 25 34 64 90 
+🔍 排序验证: ✅ 正确
+```
+
+## 🤝 贡献指南
+
+1. 在`algorithms/`目录下创建新的算法文件
+2. 使用`utility.h`中的工具函数
+3. 遵循现有的代码风格和注释规范
+4. 添加性能测试和验证
+5. 更新README文档
+
+## 📝 许可证
+
+MIT License
+
+## 🚀 快速开始示例
+
+### 使用VSCode（最简单）
+1. 打开 `algorithms/sorting/bubble_sort.cpp`
+2. 按 **F5**
+3. 享受算法演示！
+
+### 使用命令行
+```bash
+# 构建所有算法
+./simple_build.sh
+
+# 运行冒泡排序
+./bin/bubble_sort
+
+# 运行原有QuickSort算法
+./bin/Code01_Partition1
+```
+
+## 🙏 致谢
+
+感谢所有为这个项目做出贡献的开发者们！
