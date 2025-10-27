@@ -1,0 +1,39 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "🐛 调试当前算法文件",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/bin/${fileBasenameNoExtension}",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "🔨 构建当前算法文件",
+            "stopAtEntry": false,
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb"
+        },
+        {
+            "name": "🐛 调试当前算法文件 (GDB)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/bin/${fileBasenameNoExtension}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "🔨 构建当前算法文件",
+            "miDebuggerPath": "/usr/bin/gdb"
+        }
+    ]
+}

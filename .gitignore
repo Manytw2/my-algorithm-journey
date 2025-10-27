@@ -1,39 +1,236 @@
-# 构建输出目录
+# ================================
+# C++ 编译产物
+# ================================
+
+# 目标文件
+*.o
+*.obj
+*.d
+
+# 预编译头文件
+*.gch
+*.pch
+
+# 编译库文件
+*.a
+*.lib
+*.la
+*.lo
+*.lai
+
+# 动态链接库
+*.so
+*.so.*
+*.dylib
+*.dll
+
+# 可执行文件
+*.exe
+*.out
+*.app
+
+# ================================
+# 构建目录
+# ================================
+
+# 主构建目录
 build/
 bin/
 obj/
-*.exe
-*.obj
+output/
+
+# CMake 构建目录
+cmake-build-debug/
+cmake-build-release/
+
+# ================================
+# CMake 生成文件
+# ================================
+
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Testing/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps/
+*.cmake
+!CMakeLists.txt
+
+# ================================
+# IDE 配置
+# ================================
+
+# Visual Studio
+.vs/
+*.vcxproj
+*.vcxproj.user
+*.vcxproj.filters
+*.sln
+*.sln.docstates
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+# 注意：.vscode/ 不忽略，因为包含了项目重要配置
+# 但忽略某些自动生成的文件
+.vscode/ipch/
+.vscode/.browse.VC.db*
+.vscode/.VC.db*
+
+# JetBrains IDEs (CLion, etc.)
+.idea/
+*.iml
+*.iws
+*.ipr
+cmake-build-*/
+
+# Vim
+*.swp
+*.swo
+*~
+.*.sw[a-p]
+
+# Emacs
+\#*\#
+.\#*
+*~
+
+# ================================
+# 操作系统文件
+# ================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# ================================
+# 调试和性能分析
+# ================================
+
+*.dSYM/
+*.su
+*.idb
 *.pdb
 *.ilk
 *.exp
-*.lib
 
-# Visual Studio 生成的文件
-.vs/
-*.vcxproj.user
-*.vcxproj.filters
-*.sln.docstates
-
-# CMake 生成的文件
-CMakeCache.txt
-CMakeFiles/
-cmake_install.cmake
-Makefile
-
+# ================================
 # 临时文件
+# ================================
+
 *.tmp
 *.temp
 *.log
+*.bak
+*.backup
+*.old
+*.orig
+*.rej
+*.swp
+*.swo
 
-# 系统文件
-.DS_Store
-Thumbs.db
+# ================================
+# 依赖管理
+# ================================
 
-# IDE 文件
-.vscode/settings.json
-.vscode/launch.json
-.vscode/tasks.json
+# vcpkg
+vcpkg_installed/
+.vcpkg-root
 
-# 输出目录
-output/
+# Conan
+conaninfo.txt
+conan.lock
+graph_info.json
+
+# ================================
+# 测试和覆盖率
+# ================================
+
+*.gcda
+*.gcno
+*.gcov
+coverage/
+*.profdata
+*.profraw
+
+# ================================
+# 文档生成
+# ================================
+
+docs/html/
+docs/latex/
+docs/_build/
+Doxyfile.bak
+
+# ================================
+# 打包和分发
+# ================================
+
+*.tar
+*.tar.gz
+*.zip
+*.7z
+*.rar
+dist/
+*.rpm
+*.deb
+
+# ================================
+# 其他
+# ================================
+
+# Python (如果有辅助脚本)
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+*.egg-info/
+
+# Node.js (如果有前端工具)
+node_modules/
+package-lock.json
+yarn.lock

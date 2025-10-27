@@ -1,246 +1,182 @@
 #!/bin/bash
+# =============================================================================
+# 算法练习环境 - 一键编译运行脚本
+# =============================================================================
+# 用法：
+#   ./run.sh                      - 列出所有可用的算法
+#   ./run.sh <algorithm_name>     - 编译并运行指定算法
+#   ./run.sh bubble_sort          - 运行冒泡排序
+#   ./run.sh -l                   - 列出所有算法
+#   ./run.sh -c                   - 清理所有编译产物
+#   ./run.sh -h                   - 显示帮助信息
+# =============================================================================
 
-# C++算法练习环境 - 运行脚本
-# 提供便捷的算法运行和测试功能
-
-set -e
+set -e  # 遇到错误立即退出
 
 # 颜色定义
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
-PURPLE='\033[0;35m'
-NC='\033[0m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
 
-# 打印带颜色的消息
-print_info() {
-    echo -e "${BLUE}ℹ️  $1${NC}"
-}
-
-print_success() {
-    echo -e "${GREEN}✅ $1${NC}"
-}
-
-print_warning() {
-    echo -e "${YELLOW}⚠️  $1${NC}"
-}
-
-print_error() {
-    echo -e "${RED}❌ $1${NC}"
-}
-
-print_header() {
-    echo -e "${PURPLE}🎯 $1${NC}"
-}
-
-# 检查构建目录
-check_build() {
-    if [ ! -d "build" ] && [ ! -d "bin" ]; then
-        print_error "构建目录不存在，请先运行 ./build.sh 或 ./simple_build.sh"
-        exit 1
-    fi
-    
-    if [ ! -d "build/bin" ] && [ ! -d "bin" ]; then
-        print_error "可执行文件目录不存在，请先构建项目"
-        exit 1
-    fi
-}
-
-# 列出所有可用算法
-list_algorithms() {
-    print_header "可用算法列表"
-    echo "=================="
-    
-    local count=0
-    # 检查build/bin目录
-    if [ -d "build/bin" ]; then
-        for file in build/bin/*; do
-            if [ -f "$file" ] && [ -x "$file" ]; then
-                filename=$(basename "$file")
-                echo "   • $filename"
-                ((count++))
-            fi
-        done
-    fi
-    
-    # 检查bin目录
-    if [ -d "bin" ]; then
-        for file in bin/*; do
-            if [ -f "$file" ] && [ -x "$file" ]; then
-                filename=$(basename "$file")
-                echo "   • $filename"
-                ((count++))
-            fi
-        done
-    fi
-    
-    echo ""
-    echo "📊 总计: $count 个算法"
-}
-
-# 运行指定算法
-run_algorithm() {
-    local algorithm_name=$1
-    local executable=""
-    
-    # 优先检查build/bin目录
-    if [ -f "build/bin/$algorithm_name" ]; then
-        executable="build/bin/$algorithm_name"
-    elif [ -f "bin/$algorithm_name" ]; then
-        executable="bin/$algorithm_name"
-    else
-        print_error "算法 '$algorithm_name' 不存在"
-        print_info "使用 '$0 --list' 查看可用算法"
-        exit 1
-    fi
-    
-    print_header "运行算法: $algorithm_name"
-    echo "=================="
-    
-    # 运行算法
-    "$executable"
-    
-    print_success "算法执行完成"
-}
-
-# 运行所有算法
-run_all_algorithms() {
-    print_header "运行所有算法"
-    echo "=================="
-    
-    local count=0
-    for file in build/bin/*; do
-        if [ -f "$file" ] && [ -x "$file" ]; then
-            filename=$(basename "$file")
-            echo ""
-            print_info "运行算法: $filename"
-            echo "----------------------------------------"
-            "$file"
-            ((count++))
-        fi
-    done
-    
-    echo ""
-    print_success "所有算法执行完成 (共 $count 个)"
-}
-
-# 性能测试
-performance_test() {
-    print_header "性能测试"
-    echo "=================="
-    
-    local algorithms=("bubble_sort" "selection_sort" "insertion_sort" "quick_sort_enhanced")
-    local sizes=(1000 5000 10000)
-    
-    for algorithm in "${algorithms[@]}"; do
-        if [ -f "build/bin/$algorithm" ]; then
-            print_info "测试算法: $algorithm"
-            echo "----------------------------------------"
-            for size in "${sizes[@]}"; do
-                echo "数据大小: $size"
-                time build/bin/$algorithm > /dev/null 2>&1
-            done
-            echo ""
-        fi
-    done
-}
-
-# 交互式选择
-interactive_mode() {
-    print_header "交互式算法选择"
-    echo "=================="
-    
-    list_algorithms
-    echo ""
-    echo "请选择要运行的算法:"
-    echo "1. 输入算法名称运行单个算法"
-    echo "2. 输入 'all' 运行所有算法"
-    echo "3. 输入 'test' 进行性能测试"
-    echo "4. 输入 'quit' 退出"
-    echo ""
-    
-    while true; do
-        read -p "请输入选择: " choice
-        
-        case $choice in
-            "quit"|"exit"|"q")
-                print_success "退出程序"
-                exit 0
-                ;;
-            "all")
-                run_all_algorithms
-                break
-                ;;
-            "test")
-                performance_test
-                break
-                ;;
-            *)
-                if [ -n "$choice" ]; then
-                    run_algorithm "$choice"
-                    break
-                else
-                    print_warning "请输入有效的选择"
-                fi
-                ;;
-        esac
-    done
-}
+# 项目根目录
+PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"
+BUILD_DIR="${PROJECT_ROOT}/build"
+BIN_DIR="${BUILD_DIR}/bin"
 
 # 显示帮助信息
 show_help() {
-    echo "🎯 C++算法练习环境 - 运行脚本"
-    echo "================================"
+    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${CYAN}🚀 算法练习环境 - 一键运行脚本${NC}"
+    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo ""
-    echo "用法: $0 [选项] [算法名称]"
+    echo "用法："
+    echo "  ./run.sh                    - 列出所有可用的算法"
+    echo "  ./run.sh <algorithm_name>   - 编译并运行指定算法"
+    echo "  ./run.sh -l, --list         - 列出所有算法"
+    echo "  ./run.sh -c, --clean        - 清理所有编译产物"
+    echo "  ./run.sh -r, --rebuild      - 重新构建整个项目"
+    echo "  ./run.sh -h, --help         - 显示此帮助信息"
     echo ""
-    echo "选项:"
-    echo "  -l, --list      列出所有可用算法"
-    echo "  -a, --all       运行所有算法"
-    echo "  -t, --test      进行性能测试"
-    echo "  -i, --interactive  交互式模式"
-    echo "  -h, --help      显示此帮助信息"
+    echo "示例："
+    echo "  ./run.sh bubble_sort        - 运行冒泡排序"
+    echo "  ./run.sh Code01_Partition1  - 运行快速排序Partition1"
+    echo "  ./run.sh quick_sort_enhanced - 运行优化版快速排序"
     echo ""
-    echo "示例:"
-    echo "  $0 bubble_sort           # 运行冒泡排序"
-    echo "  $0 --list               # 列出所有算法"
-    echo "  $0 --all                # 运行所有算法"
-    echo "  $0 --test               # 性能测试"
-    echo "  $0 --interactive        # 交互式选择"
+}
+
+# 列出所有可用的算法
+list_algorithms() {
+    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${CYAN}📋 可用的算法列表${NC}"
+    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo ""
-    echo "QuickSort算法 (保持原有结构):"
-    echo "  $0 Code01_Partition1    # 运行Partition1"
-    echo "  $0 Code02_Partition2    # 运行Partition2"
-    echo "  $0 Code03_QuickSort     # 运行快速排序"
+
+    # 查找所有的.cpp文件
+    local count=0
+    while IFS= read -r file; do
+        local filename=$(basename "$file" .cpp)
+        local dir=$(dirname "$file" | sed "s|${PROJECT_ROOT}/algorithms/||")
+        count=$((count + 1))
+        printf "  ${GREEN}%2d.${NC} %-30s ${BLUE}(%s)${NC}\n" "$count" "$filename" "$dir"
+    done < <(find "${PROJECT_ROOT}/algorithms" -name "*.cpp" -type f | sort)
+
+    echo ""
+    echo -e "${YELLOW}提示：使用 './run.sh <algorithm_name>' 运行指定算法${NC}"
+    echo ""
+}
+
+# 清理编译产物
+clean_build() {
+    echo -e "${YELLOW}🧹 清理编译产物...${NC}"
+    if [ -d "$BUILD_DIR" ]; then
+        rm -rf "$BUILD_DIR"
+        echo -e "${GREEN}✅ 清理完成${NC}"
+    else
+        echo -e "${YELLOW}⚠️  build 目录不存在，无需清理${NC}"
+    fi
+}
+
+# 重新构建项目
+rebuild_project() {
+    echo -e "${CYAN}🔨 重新构建项目...${NC}"
+    clean_build
+    build_project
+}
+
+# 构建项目
+build_project() {
+    echo -e "${CYAN}🔨 构建项目...${NC}"
+
+    # 创建build目录
+    if [ ! -d "$BUILD_DIR" ]; then
+        mkdir -p "$BUILD_DIR"
+    fi
+
+    cd "$BUILD_DIR"
+
+    # 运行CMake
+    echo -e "${BLUE}▶ 运行 CMake...${NC}"
+    cmake .. -DCMAKE_BUILD_TYPE=Release
+
+    # 编译
+    echo -e "${BLUE}▶ 编译项目...${NC}"
+    make -j$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)
+
+    cd "$PROJECT_ROOT"
+    echo -e "${GREEN}✅ 构建完成${NC}"
+}
+
+# 编译并运行指定算法
+run_algorithm() {
+    local algorithm_name="$1"
+
+    # 检查算法文件是否存在
+    local source_files=$(find "${PROJECT_ROOT}/algorithms" -name "${algorithm_name}.cpp" -type f)
+
+    if [ -z "$source_files" ]; then
+        echo -e "${RED}❌ 错误: 找不到算法 '${algorithm_name}'${NC}"
+        echo -e "${YELLOW}💡 提示: 使用 './run.sh -l' 查看所有可用的算法${NC}"
+        exit 1
+    fi
+
+    # 确保项目已构建
+    if [ ! -d "$BUILD_DIR" ]; then
+        echo -e "${YELLOW}⚠️  项目尚未构建，开始构建...${NC}"
+        build_project
+    fi
+
+    # 检查可执行文件是否存在
+    local executable="${BIN_DIR}/${algorithm_name}"
+
+    if [ ! -f "$executable" ]; then
+        echo -e "${YELLOW}⚠️  可执行文件不存在，重新构建...${NC}"
+        build_project
+    fi
+
+    # 运行算法
+    echo ""
+    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${GREEN}🚀 运行算法: ${algorithm_name}${NC}"
+    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo ""
+
+    "$executable"
+
+    local exit_code=$?
+    echo ""
+    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    if [ $exit_code -eq 0 ]; then
+        echo -e "${GREEN}✅ 算法执行成功 (退出码: $exit_code)${NC}"
+    else
+        echo -e "${RED}❌ 算法执行失败 (退出码: $exit_code)${NC}"
+    fi
+    echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo ""
+
+    return $exit_code
 }
 
 # 主函数
 main() {
-    # 检查构建目录
-    check_build
-    
-    # 解析命令行参数
-    if [ $# -eq 0 ]; then
-        interactive_mode
-        return
-    fi
-    
-    case $1 in
+    # 处理命令行参数
+    case "${1:-}" in
+        -h|--help)
+            show_help
+            ;;
         -l|--list)
             list_algorithms
             ;;
-        -a|--all)
-            run_all_algorithms
+        -c|--clean)
+            clean_build
             ;;
-        -t|--test)
-            performance_test
+        -r|--rebuild)
+            rebuild_project
             ;;
-        -i|--interactive)
-            interactive_mode
-            ;;
-        -h|--help)
-            show_help
+        "")
+            list_algorithms
             ;;
         *)
             run_algorithm "$1"
@@ -248,5 +184,5 @@ main() {
     esac
 }
 
-# 运行主函数
+# 执行主函数
 main "$@"

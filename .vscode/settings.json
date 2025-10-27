@@ -1,0 +1,47 @@
+{
+    "files.associations": {
+        "*.h": "cpp",
+        "*.cpp": "cpp",
+        "iostream": "cpp",
+        "vector": "cpp",
+        "algorithm": "cpp",
+        "chrono": "cpp",
+        "random": "cpp",
+        "iomanip": "cpp",
+        "string": "cpp",
+        "utility": "cpp",
+        "functional": "cpp",
+        "memory": "cpp"
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/include",
+        "${workspaceFolder}/algorithms"
+    ],
+    "C_Cpp.default.compilerPath": "/usr/bin/clang++",
+    "C_Cpp.default.cppStandard": "c++17",
+    "C_Cpp.default.intelliSenseMode": "macos-clang-arm64",
+    "cmake.configureOnOpen": false,
+    "cmake.buildDirectory": "${workspaceFolder}/build",
+    "editor.formatOnSave": false,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/build/CMakeFiles": true
+    },
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "code-runner.executorMap": {
+        "cpp": "cd $dir && mkdir -p ../../../build && cd ../../../build && cmake .. && make $fileNameWithoutExt && ./bin/$fileNameWithoutExt"
+    },
+    "code-runner.runInTerminal": true,
+    "code-runner.clearPreviousOutput": true,
+    "code-runner.saveFileBeforeRun": true,
+    "[cpp]": {
+        "editor.defaultFormatter": "ms-vscode.cpptools"
+    }
+}

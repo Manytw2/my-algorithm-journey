@@ -1,0 +1,13 @@
+[
+    {
+        "key": "cmd+shift+r",
+        "command": "cmake.setLaunchTarget",
+        "when": "cmake.configured"
+    },
+    {
+        "key": "cmd+shift+t",
+        "command": "cmake.runWithoutDebugging",
+        "when": "cmake.configured"
+    }
+]
+

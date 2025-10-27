@@ -1,0 +1,135 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "🔨 构建当前算法文件",
+            "type": "shell",
+            "command": "cd ${workspaceFolder} && mkdir -p build && cd build && cmake .. && make ${fileBasenameNoExtension}",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": ["$gcc"],
+            "detail": "编译当前打开的算法文件"
+        },
+        {
+            "label": "🚀 运行当前算法文件",
+            "type": "shell",
+            "command": "${workspaceFolder}/run.sh ${fileBasenameNoExtension}",
+            "dependsOn": ["🔨 构建当前算法文件"],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            },
+            "problemMatcher": [],
+            "detail": "编译并运行当前打开的算法文件"
+        },
+        {
+            "label": "🏗️ 完整构建项目",
+            "type": "shell",
+            "command": "cd ${workspaceFolder} && mkdir -p build && cd build && cmake .. && make -j$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)",
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": ["$gcc"],
+            "detail": "构建整个项目的所有算法"
+        },
+        {
+            "label": "🧹 清理构建产物",
+            "type": "shell",
+            "command": "${workspaceFolder}/run.sh --clean",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [],
+            "detail": "清理所有编译产物"
+        },
+        {
+            "label": "🔄 重新构建项目",
+            "type": "shell",
+            "command": "${workspaceFolder}/run.sh --rebuild",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": ["$gcc"],
+            "detail": "清理并重新构建整个项目"
+        },
+        {
+            "label": "📋 列出所有算法",
+            "type": "shell",
+            "command": "${workspaceFolder}/run.sh --list",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": [],
+            "detail": "列出所有可用的算法"
+        },
+        {
+            "label": "🎯 快速编译运行（Ctrl+Shift+B）",
+            "type": "shell",
+            "command": "clear && echo '🚀 编译运行: ${fileBasename}' && echo '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' && cd ${workspaceFolder} && mkdir -p build && cd build && cmake .. >/dev/null 2>&1 && make ${fileBasenameNoExtension} && echo '' && echo '▶️  执行结果:' && echo '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' && ./bin/${fileBasenameNoExtension}",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": ["relative", "${workspaceFolder}"],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            },
+            "detail": "一键编译并运行当前文件（推荐使用）"
+        }
+    ]
+}

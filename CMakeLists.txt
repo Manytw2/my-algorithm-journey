@@ -31,7 +31,6 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 # 自动发现算法文件
 file(GLOB_RECURSE ALGORITHM_SOURCES 
     "algorithms/*.cpp"
-    "QuickSort/*.cpp"
 )
 
 # 过滤掉不需要的文件
@@ -62,7 +61,6 @@ foreach(SOURCE_FILE ${ALGORITHM_SOURCES})
         $<$<CONFIG:Release>:NDEBUG>
     )
     
-    message(STATUS "✅ 发现算法文件: ${SOURCE_FILE} -> ${FILE_NAME}")
 endforeach()
 
 # 创建算法目录（如果不存在）
@@ -71,62 +69,27 @@ file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/algorithms/searching)
 file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/algorithms/graph)
 file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/algorithms/dp)
 
-# 创建示例算法文件（如果不存在）
-set(EXAMPLE_ALGORITHMS
-    "algorithms/sorting/bubble_sort.cpp"
-    "algorithms/sorting/selection_sort.cpp"
-    "algorithms/sorting/insertion_sort.cpp"
-    "algorithms/searching/binary_search.cpp"
-    "algorithms/searching/linear_search.cpp"
-)
-
-foreach(EXAMPLE_FILE ${EXAMPLE_ALGORITHMS})
-    if(NOT EXISTS ${CMAKE_SOURCE_DIR}/${EXAMPLE_FILE})
-        message(STATUS "📝 将创建示例文件: ${EXAMPLE_FILE}")
-    endif()
-endforeach()
-
-# 打印构建信息
-message(STATUS "")
-message(STATUS "🎯 ====== 构建配置完成 ======")
-message(STATUS "📁 项目名称: ${PROJECT_NAME} v${PROJECT_VERSION}")
-message(STATUS "🔧 C++标准: C++${CMAKE_CXX_STANDARD}")
-message(STATUS "📊 发现算法文件数量: ${CMAKE_CURRENT_LIST_LENGTH}")
-message(STATUS "📂 可执行文件输出目录: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
-message(STATUS "📋 包含目录: ${CMAKE_SOURCE_DIR}/include")
-message(STATUS "🎯 ================================")
-message(STATUS "")
-
-# 添加自定义目标
-add_custom_target(list_algorithms
-    COMMAND ${CMAKE_COMMAND} -E echo "📋 可用算法列表:"
-    COMMAND ${CMAKE_COMMAND} -E echo "=================="
-    COMMAND ${CMAKE_COMMAND} -E echo "QuickSort算法:"
-    COMMAND ${CMAKE_COMMAND} -E echo "  - Code01_Partition1"
-    COMMAND ${CMAKE_COMMAND} -E echo "  - Code02_Partition2" 
-    COMMAND ${CMAKE_COMMAND} -E echo "  - Code03_QuickSort"
-    COMMAND ${CMAKE_COMMAND} -E echo ""
-    COMMAND ${CMAKE_COMMAND} -E echo "其他算法:"
-    COMMAND ${CMAKE_COMMAND} -E echo "  - 查看 algorithms/ 目录"
-    COMMAND ${CMAKE_COMMAND} -E echo ""
-    COMMAND ${CMAKE_COMMAND} -E echo "💡 使用方法:"
-    COMMAND ${CMAKE_COMMAND} -E echo "  cmake --build . --target <算法名称>"
-    COMMAND ${CMAKE_COMMAND} -E echo "  ./bin/<算法名称>"
-    VERBATIM
-)
-
 # 添加清理目标
 add_custom_target(clean_all
     COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/bin
     COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/lib
-    COMMAND ${CMAKE_COMMAND} -E echo "🧹 清理完成"
     VERBATIM
 )
 
-# 安装规则
-install(TARGETS ${ALGORITHM_SOURCES}
-    RUNTIME DESTINATION bin
-)
+# 安装规则 - 收集所有可执行目标
+set(ALL_EXECUTABLES "")
+foreach(SOURCE_FILE ${ALGORITHM_SOURCES})
+    get_filename_component(FILE_NAME ${SOURCE_FILE} NAME_WE)
+    if(TARGET ${FILE_NAME})
+        list(APPEND ALL_EXECUTABLES ${FILE_NAME})
+    endif()
+endforeach()
+
+if(ALL_EXECUTABLES)
+    install(TARGETS ${ALL_EXECUTABLES}
+        RUNTIME DESTINATION bin
+    )
+endif()
 
 install(FILES include/utility.h
     DESTINATION include
