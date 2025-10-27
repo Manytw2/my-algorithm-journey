@@ -1,18 +1,3 @@
-/**
- * @file Code03_QuickSort.cpp
- * @brief 快速排序完整实现
- * @author Algorithm Learning Environment
- * @version 1.0
- *
- * 时间复杂度: O(n log n) - 平均情况，O(n²) - 最坏情况
- * 空间复杂度: O(log n) - 递归栈空间
- * 稳定性: 不稳定
- *
- * 算法思想：
- * - 分治法：选择基准元素，将数组分为两部分
- * - 递归处理左右两部分
- */
-
 #include "utility.h"
 #include <vector>
 #include <iostream>
@@ -20,9 +5,6 @@
 using namespace std;
 using namespace algo;
 
-/**
- * @brief Partition函数 - 双指针法
- */
 int Partition(vector<int> & R, int s, int t) {
     int i = s, j = s + 1;
     int base = R[s];

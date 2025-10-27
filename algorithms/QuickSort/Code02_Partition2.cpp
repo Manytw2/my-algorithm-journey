@@ -1,15 +1,3 @@
-/**
- * @file Code02_Partition2.cpp
- * @brief 快速排序 - Partition方法2（双指针法）
- * @author Algorithm Learning Environment
- * @version 1.0
- *
- * 算法思想：
- * - 选择第一个元素作为基准
- * - 使用两个指针i和j，i指向小于等于基准的区域末尾
- * - j遍历数组，遇到小于等于基准的元素就与i+1交换
- */
-
 #include "utility.h"
 #include <vector>
 #include <iostream>
@@ -17,13 +5,6 @@
 using namespace std;
 using namespace algo;
 
-/**
- * @brief Partition方法2 - 双指针法
- * @param R 待划分的数组
- * @param s 起始索引
- * @param t 结束索引
- * @return 基准元素最终位置
- */
 int Partition2(vector<int> & R, int s, int t) {
     int i = s, j = s + 1;
     int base = R[s];
