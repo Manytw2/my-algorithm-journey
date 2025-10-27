@@ -84,6 +84,9 @@ _deps/
 .vscode/.browse.VC.db*
 .vscode/.VC.db*
 
+# clangd 缓存
+.cache/
+
 # JetBrains IDEs (CLion, etc.)
 .idea/
 *.iml
@@ -172,6 +175,7 @@ $RECYCLE.BIN/
 *.rej
 *.swp
 *.swo
+
 
 # ================================
 # 依赖管理
