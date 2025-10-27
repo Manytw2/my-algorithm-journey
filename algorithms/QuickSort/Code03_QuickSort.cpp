@@ -53,7 +53,8 @@ void QuickSort(vector<int> & R, int s, int t) {
     }
 }
 
-ALGORITHM_MAIN("快速排序")
+int main() {
+    printAlgorithmTitle("快速排序");
 
     // 测试数据
     vector<int> test_data = {5, 3, 1, 9, 2, 8, 4, 7, 6, 10};
@@ -146,4 +147,5 @@ ALGORITHM_MAIN("快速排序")
     cout << "     - 三数取中法" << endl;
     cout << "     - 小数组使用插入排序" << endl;
 
-ALGORITHM_END
+    return 0;
+}

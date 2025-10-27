@@ -3,7 +3,7 @@
  * @brief 增强版快速排序算法实现
  * @author Algorithm Learning Environment
  * @version 1.0
- * 
+ *
  * 基于原有QuickSort文件夹的算法，使用新的工具库进行增强
  * 时间复杂度: O(n log n) - 平均情况, O(n²) - 最坏情况
  * 空间复杂度: O(log n) - 平均情况, O(n) - 最坏情况
@@ -27,7 +27,7 @@ using namespace algo;
 int Partition1(vector<int>& arr, int s, int t) {
     int i = s, j = t;
     int base = arr[s];  // 选择第一个元素作为基准
-    
+
     while (i < j) {
         // 从右向左找小于基准的元素
         while (i < j && arr[j] >= base) {
@@ -37,7 +37,7 @@ int Partition1(vector<int>& arr, int s, int t) {
             arr[i] = arr[j];  // 挖坑填数
             i++;
         }
-        
+
         // 从左向右找大于基准的元素
         while (i < j && arr[i] <= base) {
             i++;
@@ -47,7 +47,7 @@ int Partition1(vector<int>& arr, int s, int t) {
             j--;
         }
     }
-    
+
     // 基准归位
     arr[i] = base;
     return i;
@@ -63,14 +63,14 @@ int Partition1(vector<int>& arr, int s, int t) {
 int Partition2(vector<int>& arr, int s, int t) {
     int pivot = arr[t];  // 选择最后一个元素作为基准
     int i = s - 1;       // 小于基准的元素的索引
-    
+
     for (int j = s; j < t; j++) {
         if (arr[j] <= pivot) {
             i++;
             swap(arr[i], arr[j]);
         }
     }
-    
+
     swap(arr[i + 1], arr[t]);
     return i + 1;
 }
@@ -100,7 +100,7 @@ void QuickSortWithSteps(vector<int>& arr, int s, int t, int depth = 0) {
     if (s < t) {
         string indent(depth * 2, ' ');
         cout << indent << "🔍 排序范围 [" << s << ", " << t << "]" << endl;
-        
+
         int pivot_index = Partition1(arr, s, t);
         cout << indent << "  基准位置: " << pivot_index << ", 基准值: " << arr[pivot_index] << endl;
         cout << indent << "  分割后: ";
@@ -109,7 +109,7 @@ void QuickSortWithSteps(vector<int>& arr, int s, int t, int depth = 0) {
             else cout << arr[i] << " ";
         }
         cout << endl;
-        
+
         QuickSortWithSteps(arr, s, pivot_index - 1, depth + 1);
         QuickSortWithSteps(arr, pivot_index + 1, t, depth + 1);
     }
@@ -123,12 +123,12 @@ void QuickSortWithSteps(vector<int>& arr, int s, int t, int depth = 0) {
  */
 void QuickSort3Way(vector<int>& arr, int s, int t) {
     if (s >= t) return;
-    
+
     int pivot = arr[s];
     int lt = s;      // arr[s+1..lt] < pivot
     int gt = t;      // arr[gt..t] > pivot
     int i = s + 1;   // arr[lt+1..i-1] == pivot
-    
+
     while (i <= gt) {
         if (arr[i] < pivot) {
             swap(arr[lt++], arr[i++]);
@@ -138,7 +138,7 @@ void QuickSort3Way(vector<int>& arr, int s, int t) {
             i++;
         }
     }
-    
+
     QuickSort3Way(arr, s, lt - 1);
     QuickSort3Way(arr, gt + 1, t);
 }
@@ -157,21 +157,22 @@ void RandomizedQuickSort(vector<int>& arr, int s, int t) {
         uniform_int_distribution<> dis(s, t);
         int random_index = dis(gen);
         swap(arr[s], arr[random_index]);
-        
+
         int pivot_index = Partition1(arr, s, t);
         RandomizedQuickSort(arr, s, pivot_index - 1);
         RandomizedQuickSort(arr, pivot_index + 1, t);
     }
 }
 
-ALGORITHM_MAIN("增强版快速排序")
+int main() {
+    printAlgorithmTitle("增强版快速排序");
 
     // 测试数据
     vector<int> test_data = {64, 34, 25, 12, 22, 11, 90, 5, 77, 30};
-    
+
     cout << "📊 原始数据: ";
     array_utils::print(test_data, "", 20);
-    
+
     // 基本快速排序测试
     {
         auto data_copy = array_utils::copy(test_data);
@@ -179,17 +180,17 @@ ALGORITHM_MAIN("增强版快速排序")
         tester.testPerformance([&]() {
             QuickSort(data_copy, 0, data_copy.size() - 1);
         }, test_data.size());
-        
+
         cout << "📊 排序结果: ";
         array_utils::print(data_copy, "", 20);
-        
+
         // 验证排序结果
         bool is_correct = array_utils::isSorted(data_copy);
         cout << "🔍 排序验证: " << (is_correct ? "✅ 正确" : "❌ 错误") << endl;
     }
-    
+
     cout << "\n" << string(50, '=') << endl;
-    
+
     // 详细步骤演示
     {
         auto data_copy = array_utils::copy(test_data);
@@ -198,9 +199,9 @@ ALGORITHM_MAIN("增强版快速排序")
         cout << "📊 最终结果: ";
         array_utils::print(data_copy, "", 20);
     }
-    
+
     cout << "\n" << string(50, '=') << endl;
-    
+
     // 不同分割算法对比
     {
         cout << "⚡ 不同分割算法对比:" << endl;
@@ -215,9 +216,9 @@ ALGORITHM_MAIN("增强版快速排序")
                 }
             }
         };
-        
+
         AlgorithmTester tester("分割算法对比");
-        tester.compareAlgorithms(partition_names, 
+        tester.compareAlgorithms(partition_names,
             [&]() {
                 auto data_copy = array_utils::copy(test_data);
                 QuickSort(data_copy, 0, data_copy.size() - 1);
@@ -232,48 +233,48 @@ ALGORITHM_MAIN("增强版快速排序")
             }
         );
     }
-    
+
     cout << "\n" << string(50, '=') << endl;
-    
+
     // 三路快速排序测试
     {
         cout << "🔄 三路快速排序测试 (处理重复元素):" << endl;
         vector<int> duplicate_data = {3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5};
-        
+
         cout << "📊 原始数据 (含重复): ";
         array_utils::print(duplicate_data, "", 20);
-        
+
         Timer timer("三路快速排序");
         QuickSort3Way(duplicate_data, 0, duplicate_data.size() - 1);
         long long time = timer.stop();
-        
+
         cout << "📊 排序结果: ";
         array_utils::print(duplicate_data, "", 20);
-        
+
         bool is_correct = array_utils::isSorted(duplicate_data);
         cout << "🔍 排序验证: " << (is_correct ? "✅ 正确" : "❌ 错误") << endl;
     }
-    
+
     cout << "\n" << string(50, '=') << endl;
-    
+
     // 性能测试
     {
         cout << "💪 性能测试:" << endl;
         vector<size_t> sizes = {1000, 5000, 10000, 20000};
-        
+
         for (size_t size : sizes) {
             auto random_data = array_utils::generateRandom(size);
-            
+
             Timer timer("快速排序-" + to_string(size));
             QuickSort(random_data, 0, random_data.size() - 1);
             long long time = timer.stop();
-            
+
             cout << "   数据大小: " << size << ", 时间: " << time << " μs" << endl;
         }
     }
-    
+
     cout << "\n" << string(50, '=') << endl;
-    
+
     // 算法特性说明
     cout << "📚 算法特性:" << endl;
     cout << "   • 时间复杂度: O(n log n) - 平均情况, O(n²) - 最坏情况" << endl;
@@ -284,4 +285,5 @@ ALGORITHM_MAIN("增强版快速排序")
     cout << "   • 优化: 随机化选择基准，三路分割处理重复元素" << endl;
     cout << "   • 分割方法: Partition1(挖坑填数), Partition2(双指针)" << endl;
 
-ALGORITHM_END
+    return 0;
+}

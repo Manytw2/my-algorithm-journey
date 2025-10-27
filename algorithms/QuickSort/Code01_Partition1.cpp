@@ -55,7 +55,8 @@ int Partition1(vector<int> & R, int s, int t) {
     return i;
 }
 
-ALGORITHM_MAIN("快速排序-Partition1（挖坑填数法）")
+int main() {
+    printAlgorithmTitle("快速排序-Partition1（挖坑填数法）");
 
     // 测试数据
     vector<int> arr = {5, 3, 1, 9, 2, 8, 4, 7, 6};
@@ -102,4 +103,5 @@ ALGORITHM_MAIN("快速排序-Partition1（挖坑填数法）")
     cout << "   • 空间复杂度: O(1)" << endl;
     cout << "   • 特点: 减少交换次数，效率较高" << endl;
 
-ALGORITHM_END
+    return 0;
+}

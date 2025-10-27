@@ -443,16 +443,13 @@ void stressTest(Func func, size_t iterations = 1000, size_t data_size = 100) {
 } // namespace validation
 
 /**
- * @brief 便捷宏定义
+ * @brief 打印算法标题
+ * @param algorithm_name 算法名称
  */
-#define ALGORITHM_MAIN(algorithm_name) \
-    int main() { \
-        std::cout << "🎯 " << algorithm_name << " 算法演示" << std::endl; \
-        std::cout << "=" << std::string(50, '=') << std::endl;
-
-#define ALGORITHM_END \
-        return 0; \
-    }
+inline void printAlgorithmTitle(const std::string& algorithm_name) {
+    std::cout << "🎯 " << algorithm_name << " 算法演示" << std::endl;
+    std::cout << "=" << std::string(50, '=') << std::endl;
+}
 
 #define TIMER_START(name) Timer timer(name)
 #define TIMER_STOP() timer.stop()

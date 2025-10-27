@@ -42,7 +42,8 @@ int Partition2(vector<int> & R, int s, int t) {
     return i;
 }
 
-ALGORITHM_MAIN("快速排序-Partition2（双指针法）")
+int main() {
+    printAlgorithmTitle("快速排序-Partition2（双指针法）");
 
     // 测试数据
     vector<int> arr = {5, 3, 1, 9, 2, 8, 4, 7, 6};
@@ -89,4 +90,5 @@ ALGORITHM_MAIN("快速排序-Partition2（双指针法）")
     cout << "   • 空间复杂度: O(1)" << endl;
     cout << "   • 特点: 代码简洁，易于理解" << endl;
 
-ALGORITHM_END
+    return 0;
+}
