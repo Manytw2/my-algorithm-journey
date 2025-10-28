@@ -4,17 +4,17 @@
         {
             "label": "🔨 构建当前算法文件",
             "type": "shell",
-            "command": "cd ${workspaceFolder} && mkdir -p build && cd build && cmake .. && make ${fileBasenameNoExtension}",
+            "command": "mkdir -p ${workspaceFolder}/build && cd ${workspaceFolder}/build && cmake .. -DCMAKE_BUILD_TYPE=Debug > /dev/null 2>&1 || true && cmake --build . --target ${fileBasenameNoExtension} -j",
             "group": {
                 "kind": "build",
-                "isDefault": true
+                "isDefault": false
             },
             "presentation": {
                 "echo": true,
-                "reveal": "always",
+                "reveal": "silent",
                 "focus": false,
                 "panel": "shared",
-                "showReuseMessage": true,
+                "showReuseMessage": false,
                 "clear": false
             },
             "problemMatcher": ["$gcc"],
@@ -43,7 +43,7 @@
         {
             "label": "🏗️ 完整构建项目",
             "type": "shell",
-            "command": "cd ${workspaceFolder} && mkdir -p build && cd build && cmake .. && make -j$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)",
+            "command": "mkdir -p ${workspaceFolder}/build && cd ${workspaceFolder}/build && cmake .. -DCMAKE_BUILD_TYPE=Release && cmake --build . -j$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)",
             "group": "build",
             "presentation": {
                 "echo": true,
@@ -104,7 +104,7 @@
         {
             "label": "🎯 快速编译运行（Ctrl+Shift+B）",
             "type": "shell",
-            "command": "clear && echo '🚀 编译运行: ${fileBasename}' && echo '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' && cd ${workspaceFolder} && mkdir -p build && cd build && cmake .. >/dev/null 2>&1 && make ${fileBasenameNoExtension} && echo '' && echo '▶️  执行结果:' && echo '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' && ./bin/${fileBasenameNoExtension}",
+            "command": "clear && echo '🚀 编译运行: ${fileBasename}' && echo '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' && mkdir -p ${workspaceFolder}/build && cd ${workspaceFolder}/build && (cmake .. -DCMAKE_BUILD_TYPE=Release >/dev/null 2>&1 || true) && cmake --build . --target ${fileBasenameNoExtension} -j && echo '' && echo '▶️  执行结果:' && echo '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' && ./bin/${fileBasenameNoExtension}",
             "group": {
                 "kind": "build",
                 "isDefault": true
