@@ -5,7 +5,7 @@
 using namespace std;
 using namespace algo;
 
-int Partition(vector<int> & R, int s, int t) {
+int Partition2(vector<int> & R, int s, int t) {
     int i = s, j = s + 1;
     int base = R[s];
 
@@ -21,22 +21,16 @@ int Partition(vector<int> & R, int s, int t) {
     return i;
 }
 
-/**
- * @brief 快速排序主函数
- * @param R 待排序数组
- * @param s 起始索引
- * @param t 结束索引
- */
 void QuickSort(vector<int> & R, int s, int t) {
     if (s < t) {
-        int pivot = Partition(R, s, t);  // 分割
+        int pivot = Partition2(R, s, t);  // 分割
         QuickSort(R, s, pivot - 1);       // 递归排序左半部分
         QuickSort(R, pivot + 1, t);       // 递归排序右半部分
     }
 }
 
 int main() {
-    printAlgorithmTitle("快速排序");
+    printAlgorithmTitle("纯递归版 快速排序");
 
     // 测试数据
     vector<int> test_data = {5, 3, 1, 9, 2, 8, 4, 7, 6, 10};
